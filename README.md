@@ -11,7 +11,7 @@ React 17.0.1
 To run this project install it localy using npm:
 
 ```
-$ cd ./BlogsClient
+$ cd ./Blogs_client
 $ npm install 
 ```
 
