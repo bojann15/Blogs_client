@@ -1,5 +1,5 @@
 # Blog
-An application used to read, write, update and delete blogs.
+An application used to read, write, like, update and delete blogs. 
 Built with React.
 
 ## Technologies
