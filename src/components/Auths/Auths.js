@@ -2,6 +2,8 @@ import React, { useState, useContext } from 'react';
 import { useHistory } from 'react-router-dom';
 import API from '../../api/index';
 import { Avatar, Button, Paper, Grid, Typography, Container } from '@material-ui/core';
+import { GoogleLogin } from 'react-google-login';
+import Icon from './icon';
 import LockOutlinedIcon from '@material-ui/icons/LockOutlined'
 import { PostContext } from '../../context/PostContext';
 import useStyles from './styles';
@@ -11,10 +13,10 @@ const Auths = () => {
     let history = useHistory();
     const classes = useStyles();
     const { addUsers } = useContext(PostContext);
-    const [showPassword, setShowPassword] = useState(false)
+    const [showPassword, setShowPassword] = useState(false);
     const [isSignup, setIsSignup] = useState(false);
     const [formData, setFormData] = useState(initialState);
-    const handleShowPassword = () => setShowPassword((prevShowPassword) => !prevShowPassword)
+    const handleShowPassword = () => setShowPassword((prevShowPassword) => !prevShowPassword);
     const handleSignUp = async (e) => {
         e.preventDefault();
         try {
@@ -23,9 +25,9 @@ const Auths = () => {
             addUsers(response.data);
             history.push('/');
         } catch (error) {
-            console.log(error)
+            console.error(error)
         }
-    }
+    };
     const handleSignIn = async (e) => {
         e.preventDefault();
         try {
@@ -36,16 +38,26 @@ const Auths = () => {
             history.push('/');
             user.result.role === 1 && history.push('/admin');
         } catch (error) {
-            console.log(error)
+            console.error(error)
         }
-    }
+    };
     const handleChange = (e) => {
         setFormData({ ...formData, [e.target.name]: e.target.value })
-    }
+    };
     const switchMode = () => {
         setIsSignup((prevIsSignup) => !prevIsSignup)
         setShowPassword(false)
-    }
+    };
+    const googleSuccess = (res) => {
+        const result = res?.profileObj;
+        const token = res?.tokenId;
+        localStorage.setItem("profile", JSON.stringify({ result, token }));
+        history.push('/');
+    };
+    const googleFailure = (error) => {
+        console.error(error)
+        console.log("Google Sign In was unsuccessful. Try Again Later")
+    };
     return (
         <Container component="main" maxWidth="xs">
             <Paper className={classes.paper} elevation={3}>
@@ -66,9 +78,10 @@ const Auths = () => {
                         <Input name="password" label="Password" handleChange={handleChange} type={showPassword ? "text" : "password"} handleShowPassword={handleShowPassword} />
                         {isSignup && <Input name="confirmPassword" label="Repeat Password" handleChange={handleChange} type="password" />}
                     </Grid>
-                    <Button type="submit" fullWidth variant="contained" color="primary" className={classes.submit}>
+                    < Button type="submit" fullWidth variant="contained" color="primary" className={classes.submit}>
                         {isSignup ? 'Sign Up' : 'Sign In'}
                     </Button>
+                    <GoogleLogin clientId="777845847095-9biuph0fhovvm6ssuscd3kjhso52236r.apps.googleusercontent.com" render={(renderProps) => (<Button className={classes.googleButton} color='primary' fullWidth onClick={renderProps.onClick} disabled={renderProps.disabled} startIcon={<Icon />} variant="contained">Google Sign In </Button>)} onSuccess={googleSuccess} onFailure={googleFailure} cookiePolicy="single_host_origin" />
                     <Grid container justify="flex-end">
                         <Grid item>
                             <Button onClick={switchMode}>
@@ -78,7 +91,7 @@ const Auths = () => {
                     </Grid>
                 </form>
             </Paper>
-        </Container>
-    )
-}
+        </Container >
+    );
+};
 export default Auths;

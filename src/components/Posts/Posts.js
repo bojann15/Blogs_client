@@ -1,6 +1,6 @@
 import React, { useContext, useEffect } from 'react';
 import { useHistory } from 'react-router-dom';
-import API from '../../api/index'
+import API from '../../api/index';
 import { PostContext } from '../../context/PostContext';
 import { Grid, CircularProgress } from '@material-ui/core';
 import Post from './Post/Post';
@@ -8,11 +8,11 @@ import useStyles from './styles';
 const Posts = () => {
     const classes = useStyles();
     const history = useHistory();
-    const { posts, setPosts, shouldUpdate, setShouldUpdate } = useContext(PostContext)
+    const { posts, setPosts, shouldUpdate, setShouldUpdate } = useContext(PostContext);
     useEffect(() => {
         if (!shouldUpdate) {
             return;
-        }
+        };
         const fetchData = async () => {
             try {
                 const response = await API.get('/posts');
@@ -31,12 +31,12 @@ const Posts = () => {
             await API.delete(`/posts/${id}`);
             setShouldUpdate(true);
         } catch (err) {
-            console.log(err);
+            console.error(err);
         }
-    }
+    };
     const handlePostSelect = (id) => {
         history.push(`/posts/${id}`)
-    }
+    };
     return (
         !posts.length ? <CircularProgress /> : (
             <Grid className={classes.container} container alignItems="stretch" spacing={3}>
@@ -50,5 +50,5 @@ const Posts = () => {
             </Grid>
         )
     );
-}
+};
 export default Posts;

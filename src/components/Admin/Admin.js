@@ -3,6 +3,8 @@ import { useHistory } from 'react-router-dom';
 import API from '../../api/index';
 import { PostContext } from '../../context/PostContext';
 import DeleteIcon from '@material-ui/icons/Delete';
+import ThumbUpAltIcon from '@material-ui/icons/ThumbUpAlt';
+import ThumbUpAltOutlined from '@material-ui/icons/ThumbUpAltOutlined';
 import moment from 'moment';
 import useStyles from './styles';
 import { Grid, Typography, Button, Table, TableBody, TableContainer, TableHead, TableRow, Paper, Card, CardActions, CardContent, CardMedia } from '@material-ui/core';
@@ -115,12 +117,16 @@ const Users = () => {
                                                 <Typography variant="h6">{post.name}</Typography>
                                                 <Typography variant="body2">{moment(post.createdAt).fromNow()}</Typography>
                                             </div>
+                                            <div className={classes.details}>
+                                                <Typography variant="body2" color="textSecondary" component="h2">{post.tags.map((tag) => `#${tag} `)}</Typography>
+                                            </div>
                                             <Typography className={classes.title} gutterBottom variant="h5" component="h2">{post.title}</Typography>
                                             <CardContent>
                                                 <Typography variant="body2" color="textSecondary" component="p">{post.message}</Typography>
                                             </CardContent>
                                             <CardActions className={classes.cardActions}>
                                                 <Button size="small" color="primary" onClick={(e) => handleDeletePosts(e, post._id)}><DeleteIcon fontSize="small" />Delete</Button>
+                                                <Button size="small" color="primary" >{(post.likes?.length > 0) ? <><ThumbUpAltIcon fontSize="small" /> &nbsp;{post.likes?.length} {post.likes?.length === 1 ? 'Like' : 'Likes'} </> : <><ThumbUpAltOutlined fontSize="small" />&nbsp;Like</>}</Button>
                                             </CardActions>
                                         </Card>
                                     </Grid>

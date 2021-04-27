@@ -11,7 +11,7 @@ const Navbar = () => {
     const classes = useStyles();
     const logout = () => {
         localStorage.clear();
-        history.push('/auth')
+        history.push('/auth');
         setUser(null);
     };
     useEffect(() => {
@@ -21,8 +21,7 @@ const Navbar = () => {
             if (decodedToken.exp * 1000 < new Date().getTime()) logout();
         }
         setUser(JSON.parse(localStorage.getItem('profile')))
-
-    }, [location])
+    }, [location]);
 
     return (
         <AppBar className={classes.appBar} position="static" color="inherit">
@@ -38,11 +37,15 @@ const Navbar = () => {
                         <Button variant="contained" className={classes.logout} color="secondary" onClick={logout}>Logout</Button>
                     </div>
                 ) : (
-                    <Button component={Link} to="/auth" variant="contained" color="primary">Sign In</Button>
+                    <div >
+                        <Button className={classes.button} component={Link} to="/auth" variant="contained" color="primary">Sign In</Button>
+                        <Button component={Link} to="/auth/signup" variant="contained" color="primary">Sign Up</Button>
+                    </div>
+
                 )}
             </Toolbar>
         </AppBar >
-    )
+    );
 };
 
 export default Navbar;
